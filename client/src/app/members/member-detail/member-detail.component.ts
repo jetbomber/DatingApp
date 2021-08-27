@@ -7,6 +7,7 @@ import { Member } from 'src/app/_models/member';
 import { Message } from 'src/app/_models/message';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
+import { MembersService } from 'src/app/_services/members.service';
 import { MessageService } from 'src/app/_services/message.service';
 import { PresenceService } from 'src/app/_services/presence.service';
 
@@ -28,6 +29,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
               private messageService: MessageService, 
               private route: ActivatedRoute,
               private accountService: AccountService,
+              private memberService: MembersService, 
               private router: Router) {
                 this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
                 this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -86,6 +88,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.messageService.getMessageThread(this.member.username).subscribe(messages => {
       this.messages = messages;
     })
+  }
+
+  addLike(username: string){
+    this.memberService.addLike(username).subscribe();
   }
 
   ngOnDestroy(): void {
